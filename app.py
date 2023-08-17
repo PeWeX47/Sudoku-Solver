@@ -2,6 +2,7 @@ import curses
 import numpy as np
 from solver import SudokuSolver
 
+# menu options
 menu = ["Enter sudoku with a picture (WILL BE ADDED)", "Enter sudoku manually", "Exit"]
 exit_menu = ["Yes", "No"]
 ASCII_LOGO = r"""
@@ -15,6 +16,7 @@ ASCII_LOGO = r"""
 
 
 def print_menu(stdscr, selected_row_idx):
+    """Displays the main menu"""
     stdscr.clear()
     h, w = stdscr.getmaxyx()
     logo_lines = ASCII_LOGO.replace("\\t", "  ").strip().split("\n")
@@ -38,6 +40,7 @@ def print_menu(stdscr, selected_row_idx):
 
 
 def print_exit_menu(stdscr, selected_col_idx):
+    """Displays the exit menu"""
     stdscr.clear()
     h, w = stdscr.getmaxyx()
     stdscr.addstr(h // 2 - len(exit_menu) // 2 - 2, w // 2 - 6, "Are you sure?")
@@ -54,6 +57,7 @@ def print_exit_menu(stdscr, selected_col_idx):
 
 
 def print_board(stdscr, board, cursor_y, cursor_x):
+    """Displays the sudoku board"""
     stdscr.clear()
     h, w = stdscr.getmaxyx()
     start_y = h // 2 - len(board) // 2
@@ -73,6 +77,7 @@ def print_board(stdscr, board, cursor_y, cursor_x):
 
 
 def print_keybinds(stdscr):
+    """Displays keybinds"""
     keybinds = ["KEY BINDS", "R - Reset", "S - Solve", "A - Automate", "Q - Go back"]
     h, w = stdscr.getmaxyx()
     for y, keybind in enumerate(keybinds):
@@ -80,13 +85,16 @@ def print_keybinds(stdscr):
 
 
 def reset_board():
+    """Resets the sudoku board"""
     return np.zeros((9, 9), dtype=int).tolist()
 
 
 def main(stdscr):
+    """Runs the sudoku solver"""
     curses.curs_set(0)
     curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
+    # Initialize variables for menu navigation and board interaction
     current_row = 0
     current_col = 0
     options_selected = False
@@ -97,6 +105,7 @@ def main(stdscr):
 
     print_menu(stdscr, current_row)
 
+    # Main loop
     while True:
         if not options_selected:
             key = stdscr.getch()

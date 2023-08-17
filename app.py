@@ -5,16 +5,12 @@ from solver import SudokuSolver
 menu = ["Enter sudoku with a picture (WILL BE ADDED)", "Enter sudoku manually", "Exit"]
 exit_menu = ["Yes", "No"]
 ASCII_LOGO = r"""
-
    _____           _       _               _____       _                              __ 
   / ____|         | |     | |             / ____|     | |                            /_ |
  | (___  _   _  __| | ___ | | ___   _    | (___   ___ | |_   _____ _ __      __   __  | |
   \___ \| | | |/ _` |/ _ \| |/ / | | |    \___ \ / _ \| \ \ / / _ \ '__|     \ \ / /  | |
   ____) | |_| | (_| | (_) |   <| |_| |    ____) | (_) | |\ V /  __/ |     _   \ V /   | |
- |_____/ \__,_|\__,_|\___/|_|\_\\__,_|   |_____/ \___/|_| \_/ \___|_|    (_)   \_/    |_|
-                                                                                         
-                                                                                         
-                                                   
+ |_____/ \__,_|\__,_|\___/|_|\_\\__,_|   |_____/ \___/|_| \_/ \___|_|    (_)   \_/    |_|                                                
 """
 
 
@@ -65,7 +61,15 @@ def print_board(stdscr, board, cursor_y, cursor_x):
             else:
                 stdscr.addstr(start_y + y, start_x + x * 3, f"{cell:^3}")
 
+    print_keybinds(stdscr)
     stdscr.refresh()
+
+
+def print_keybinds(stdscr):
+    keybinds = ["KEY BINDS", "R - Reset", "S - Solve", "A - Automate", "Q - Go back"]
+    h, w = stdscr.getmaxyx()
+    for y, keybind in enumerate(keybinds):
+        stdscr.addstr(h // 2 + y, w - 20, keybind)
 
 
 def reset_board():
@@ -167,6 +171,9 @@ def main(stdscr):
 
                 elif key == ord("s"):
                     initial_board = solver.solve(np.array(initial_board))
+
+                elif key == ord("a"):
+                    solver.automate_sudokucom(initial_board)
 
                 elif key == curses.KEY_DOWN and cursor_y < len(initial_board) - 1:
                     cursor_y += 1

@@ -5,7 +5,7 @@ from solver import SudokuSolver
 menu = ["Enter sudoku with a picture (WILL BE ADDED)", "Enter sudoku manually", "Exit"]
 exit_menu = ["Yes", "No"]
 ASCII_LOGO = r"""
-   _____           _       _               _____       _                              __ 
+   \\t_____           _       _               _____       _                              __ 
   / ____|         | |     | |             / ____|     | |                            /_ |
  | (___  _   _  __| | ___ | | ___   _    | (___   ___ | |_   _____ _ __      __   __  | |
   \___ \| | | |/ _` |/ _ \| |/ / | | |    \___ \ / _ \| \ \ / / _ \ '__|     \ \ / /  | |
@@ -17,7 +17,14 @@ ASCII_LOGO = r"""
 def print_menu(stdscr, selected_row_idx):
     stdscr.clear()
     h, w = stdscr.getmaxyx()
-    stdscr.addstr(h // 6, w // 2, ASCII_LOGO)
+    logo_lines = ASCII_LOGO.replace("\\t", "  ").strip().split("\n")
+    logo_height = len(logo_lines)
+    logo_width = max(len(line) for line in logo_lines)
+    logo_x = w // 2 - logo_width // 2
+
+    for line_idx, line in enumerate(logo_lines):
+        stdscr.addstr(h // 6 + line_idx, logo_x, line)
+
     for idx, row in enumerate(menu):
         x = w // 2 - len(row) // 2
         y = h // 2 - len(menu) // 2 + idx

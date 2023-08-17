@@ -3,7 +3,12 @@ import numpy as np
 from solver import SudokuSolver
 
 # menu options
-menu = ["Enter sudoku with a picture (WILL BE ADDED)", "Enter sudoku manually", "Exit"]
+menu = [
+    "Solve the sudoku from image (WILL BE ADDED SOON)",
+    "Enter sudoku manually",
+    "Credits",
+    "Exit",
+]
 exit_menu = ["Yes", "No"]
 ASCII_LOGO = r"""
    \\t_____           _       _               _____       _                              __ 
@@ -142,7 +147,7 @@ def main(stdscr):
                         current_row = 0
                         current_col = 0
 
-            elif current_row == len(menu) - 2:
+            elif current_row == len(menu) - 3:
                 print_board(stdscr, initial_board, cursor_y, cursor_x)
                 key = stdscr.getch()
                 if key == ord("q"):
@@ -171,7 +176,7 @@ def main(stdscr):
                 elif key >= 48 and key <= 57:
                     initial_board[cursor_y][cursor_x] = int(chr(key))
 
-            elif current_row == len(menu) - 3:
+            elif current_row == len(menu) - 4 or current_row == len(menu) - 2:
                 options_selected = False
 
         if not options_selected:

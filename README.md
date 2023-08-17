@@ -2,6 +2,8 @@
 
 This repository contains a Python program for solving Sudoku puzzles using graph coloring and backtracking. The solver utilizes NetworkX for graph representation, OpenCV for board image processing. Additionally, it provides a user-friendly interface with curses for manual puzzle entry and interaction.
 
+![logo](logo.png)
+
 ## Features
 
 - Automatically solve Sudoku puzzles using backtracking and graph coloring.

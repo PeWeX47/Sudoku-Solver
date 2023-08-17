@@ -76,35 +76,15 @@ def print_keybinds(stdscr):
     keybinds = ["KEY BINDS", "R - Reset", "S - Solve", "A - Automate", "Q - Go back"]
     h, w = stdscr.getmaxyx()
     for y, keybind in enumerate(keybinds):
-        stdscr.addstr(h // 2 + y, w - 20, keybind)
+        stdscr.addstr(h // 3 + y, w - 20, keybind)
 
 
 def reset_board():
-    return [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ]
-
-
-def print_center(stdscr, text):
-    stdscr.clear()
-    h, w = stdscr.getmaxyx()
-    x = w // 2 - len(text) // 2
-    y = h // 2
-    stdscr.addstr(y, x, text)
-    stdscr.refresh()
+    return np.zeros((9, 9), dtype=int).tolist()
 
 
 def main(stdscr):
     curses.curs_set(0)
-
     curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
     current_row = 0
@@ -113,18 +93,7 @@ def main(stdscr):
     cursor_y = 0
     cursor_x = 0
     solver = SudokuSolver()
-
-    initial_board = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ]
+    initial_board = reset_board()
 
     print_menu(stdscr, current_row)
 
@@ -200,4 +169,5 @@ def main(stdscr):
             print_menu(stdscr, current_row)
 
 
-curses.wrapper(main)
+if __name__ == "__main__":
+    curses.wrapper(main)

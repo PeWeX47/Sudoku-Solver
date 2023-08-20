@@ -20,6 +20,12 @@ This repository contains a Python program for solving Sudoku puzzles using graph
     - Press "S" to solve the puzzle.
     - Press "A" to automate solving on sudoku.com
 
+- If you choose to solve a Sudoku puzzle from screenshot of board image:
+    - Enter the path to the image of sudoku board (*if you want to go back to the main menu type "q"*).
+    - Press enter to submit the path.
+    - Wait for the algorithm to process the image.
+    - The algorithm may misdetect some digits, so it is required to correct them manually.
+
 ## Prerequisites
 
 Before using the Sudoku Solver, ensure you have the following libraries installed:

@@ -1,22 +1,25 @@
 import curses
 import numpy as np
 from solver import SudokuSolver
+import tensorflow as tf
+import keras
+import os
 
 # menu options
 menu = [
-    "Solve the sudoku from image (WILL BE ADDED SOON)",
+    "Solve the sudoku from image",
     "Enter sudoku manually",
     "Credits",
     "Exit",
 ]
 exit_menu = ["Yes", "No"]
 ASCII_LOGO = r"""
-   \\t_____           _       _               _____       _                              __ 
-  / ____|         | |     | |             / ____|     | |                            /_ |
- | (___  _   _  __| | ___ | | ___   _    | (___   ___ | |_   _____ _ __      __   __  | |
-  \___ \| | | |/ _` |/ _ \| |/ / | | |    \___ \ / _ \| \ \ / / _ \ '__|     \ \ / /  | |
-  ____) | |_| | (_| | (_) |   <| |_| |    ____) | (_) | |\ V /  __/ |     _   \ V /   | |
- |_____/ \__,_|\__,_|\___/|_|\_\\__,_|   |_____/ \___/|_| \_/ \___|_|    (_)   \_/    |_|                                                
+   \\t_____           _       _               _____       _                              ___  
+  / ____|         | |     | |             / ____|     | |                            |__ \ 
+ | (___  _   _  __| | ___ | | ___   _    | (___   ___ | |_   _____ _ __      __   __    ) |
+  \___ \| | | |/ _` |/ _ \| |/ / | | |    \___ \ / _ \| \ \ / / _ \ '__|     \ \ / /   / / 
+  ____) | |_| | (_| | (_) |   <| |_| |    ____) | (_) | |\ V /  __/ |     _   \ V /   / /_ 
+ |_____/ \__,_|\__,_|\___/|_|\_\\__,_|   |_____/ \___/|_| \_/ \___|_|    (_)   \_/   |____|                                               
 """
 
 
@@ -83,7 +86,14 @@ def print_board(stdscr, board, cursor_y, cursor_x):
 
 def print_keybinds(stdscr):
     """Displays keybinds"""
-    keybinds = ["KEY BINDS", "R - Reset", "S - Solve", "A - Automate", "Q - Go back"]
+    keybinds = [
+        "KEY BINDS",
+        "R - Reset",
+        "S - Solve",
+        "A - Automate",
+        "Q - Go back",
+    ]
+
     h, w = stdscr.getmaxyx()
     for y, keybind in enumerate(keybinds):
         stdscr.addstr(h // 3 + y, w - 20, keybind)
@@ -92,6 +102,21 @@ def print_keybinds(stdscr):
 def reset_board():
     """Resets the sudoku board"""
     return np.zeros((9, 9), dtype=int).tolist()
+
+
+def get_image_path(stdscr):
+    """Gets board image path from user"""
+    stdscr.clear()
+    h, w = stdscr.getmaxyx()
+    message = "Path to board image:"
+    stdscr.addstr(h // 3, w // 2 - len(message), message)
+
+    curses.echo()
+    image_path = stdscr.getstr(h // 3 + 1, w // 2 - len(message), curses.COLS - 1)
+    curses.noecho()
+
+    stdscr.refresh()
+    return image_path.decode("utf-8")
 
 
 def main(stdscr):
@@ -105,7 +130,8 @@ def main(stdscr):
     options_selected = False
     cursor_y = 0
     cursor_x = 0
-    solver = SudokuSolver()
+    model = keras.models.load_model(r"model\CNN_MNIST.h5")
+    solver = SudokuSolver(model)
     initial_board = reset_board()
 
     print_menu(stdscr, current_row)
@@ -160,7 +186,7 @@ def main(stdscr):
                     initial_board = reset_board()
 
                 elif key == ord("s"):
-                    initial_board = solver.solve(np.array(initial_board))
+                    initial_board = solver.solve(initial_board)
 
                 elif key == ord("a"):
                     solver.automate_sudokucom(initial_board)
@@ -176,7 +202,19 @@ def main(stdscr):
                 elif key >= 48 and key <= 57:
                     initial_board[cursor_y][cursor_x] = int(chr(key))
 
-            elif current_row == len(menu) - 4 or current_row == len(menu) - 2:
+            elif current_row == len(menu) - 4:
+                image_path = get_image_path(stdscr)
+                if os.path.exists(image_path):
+                    initial_board = solver.load_board(image_path)
+                    current_row = len(menu) - 3
+
+                elif image_path == "q":
+                    options_selected = False
+                    initial_board = reset_board()
+                    current_row = 0
+                    current_col = 0
+
+            elif current_row == len(menu) - 2:
                 options_selected = False
 
         if not options_selected:

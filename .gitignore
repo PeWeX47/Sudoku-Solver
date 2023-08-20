@@ -160,3 +160,7 @@ cython_debug/
 #.idea/
 
 app_build/
+model_train.ipynb
+test_board.PNG
+test_board2.PNG
+test_board3.PNG

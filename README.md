@@ -7,7 +7,7 @@ This repository contains a Python program for solving Sudoku puzzles using graph
 ## Features
 
 - Automatically solve Sudoku puzzles using backtracking and graph coloring.
-- Solve Sudoku puzzles from board image. (WILL BE ADDED SOON)
+- Solve Sudoku puzzles from board image. 
 - Automate the process of solving puzzles on sudoku.com.
 
 ## Instructions

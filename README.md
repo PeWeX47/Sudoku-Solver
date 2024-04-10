@@ -36,10 +36,11 @@ Before using the Sudoku Solver, ensure you have the following libraries installe
 - PyAutoGUI
 - OpenCV
 - Curses
+- Tensorflow
 
 You can install these libraries using the following command:
 ```
-pip install numpy networkx matplotlib pyautogui opencv-python-headless curses
+pip install -r requirements.txt
 ```
 
 ### Usage
